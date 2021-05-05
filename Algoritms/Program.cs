@@ -6,14 +6,16 @@ namespace Algoritms {
     class Program {
         static void Main(string[] args) {
 
-            List<int> list = new List<int>() { 3, 8, 5, 1, 1};
+            List<int> list = new List<int>() { 3, 8, 5, 1, 4, 12, 2, 7};
 
             Random rand = new Random();
 
             //int indx = binarySearch(rand.Next(0, 150), list.ToArray());
 
             //int[] arr = insertionSort(list.ToArray());
-            int[] arr = MergeSort.sortArr(list.ToArray());
+            //int[] arr = MergeSort.sortArr(list.ToArray());
+
+            int[] arr = QuickSort.quickSort(list.ToArray());
 
             Console.WriteLine();
         }
@@ -161,6 +163,49 @@ namespace Algoritms {
                 }
 
                 return arrayC;
+            }
+        }
+
+        //Быстрая сортировка
+        public class QuickSort {
+
+            //метод для обмена элементов массива
+            static void Swap(ref int x, ref int y) {
+                var t = x;
+                x = y;
+                y = t;
+            }
+
+            //метод возвращающий индекс опорного элемента
+            private static int Partition(int[] array, int minIndex, int maxIndex) {
+                var pivot = minIndex - 1;
+                for (var i = minIndex; i < maxIndex; i++) {
+                    if (array[i] < array[maxIndex]) {
+                        pivot++;
+                        Swap(ref array[pivot], ref array[i]);
+                    }
+                }
+
+                pivot++;
+                Swap(ref array[pivot], ref array[maxIndex]);
+                return pivot;
+            }
+
+            //быстрая сортировка
+            private static int[] quickSort(int[] array, int minIndex, int maxIndex) {
+                if (minIndex >= maxIndex) {
+                    return array;
+                }
+
+                var pivotIndex = Partition(array, minIndex, maxIndex);
+                quickSort(array, minIndex, pivotIndex - 1);
+                quickSort(array, pivotIndex + 1, maxIndex);
+
+                return array;
+            }
+
+            public static int[] quickSort(int[] array) {
+                return quickSort(array, 0, array.Length - 1);
             }
         }
     }
